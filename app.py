@@ -128,6 +128,12 @@ def registrar_usuario(usuario, password, nombre, apellido, correo, telefono):
 @app.route('/')
 def index():
     return render_template("index.html")
+@app.route('/registro')
+def registro():
+    return render_template("Registro.html")
+@app.route('/inicio')
+def ini():
+    return render_template("inicio.html")
 
 @app.route('/get_usuarios', )
 def get_usuarios():
