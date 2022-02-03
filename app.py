@@ -9,7 +9,6 @@ def conexion():
                             user='root',
                             password='',
                             db='dbdesire')
-
 # Definir funciones para las consultas
 #Usuarios
 def login(usuario, password):
@@ -109,32 +108,9 @@ def doble_telefono(telefono):
     except:
         return jsonify({'msj': 'Error en la bd'})
 
-def registrar_usuario(usuario, password, nombre, apellido, correo, telefono):
-    try:
-        resusuario = doble_usuario(usuario)
-        rescorreo = doble_correo(correo)
-        restelefono= doble_telefono(telefono)
-        if(resusuario['duplicado'],rescorreo['duplicado'],restelefono['duplicado']) != True:
-            conn = conexion()
-            with conn.cursor() as cursor:
-                sql = "".format()
-                cursor.execute(sql)
-            return jsonify({'msj': 'Registro correcto'})    
-            conn.close()
-        else:
-            return jsonify({'msj': 'Ocurrio un error'})
-    except:
-        return
 @app.route('/')
 def index():
     return render_template("index.html")
-@app.route('/registro')
-def registro():
-    return render_template("Registro.html")
-@app.route('/inicio')
-def ini():
-    return render_template("inicio.html")
-
 @app.route('/get_usuarios', )
 def get_usuarios():
     datos = obtener_usuarios()
@@ -149,8 +125,25 @@ def inicio():
     datos = login(request.json['usuario'], request.json['pass'])
     return datos
 @app.route('/registrar_usuario',  methods=['POST', 'GET'])
-def registrar_usuarios():  
-    datos = registrar_usuario(request.json['usuario'], request.json['nombre'], request.json['apellido'], request.json['correo'], request.json['telefono'])
-    return datos
+def registrar_usuario():
+    try:
+        resusuario = doble_usuario(request.json['usuario'])
+        print(resusuario)
+        rescorreo = doble_correo(request.json['correo'])
+        print(rescorreo)
+        restelefono= doble_telefono(request.json['telefono'])
+        print(restelefono)
+        if (resusuario['duplicado'] or rescorreo['duplicado'] or restelefono['duplicado']) == False:
+            conn = conexion()
+            with conn.cursor() as cursor:
+                sql = "INSERT INTO dbDesire.usuarios (usuario, pass, nombres, apellidos, correo, telefono, fkrol, estado)VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}','1','1');".format(request.json['usuario'],request.json['password'],request.json['nombres'],request.json['apellidos'],request.json['correo'],request.json['telefono'])
+                cursor.execute(sql)
+                conn.commit()                
+            return ({'msj': 'Registro correcto'})                
+        else:
+            
+            return ({'msj': 'Datos duplicados'})
+    except:
+        return
 if __name__ == "__main__":
     app.run(debug=True)
