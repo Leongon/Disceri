@@ -39,6 +39,7 @@ function registrar(nombre, apellido, usuario, password, telefono, correo,Rpasswo
                                 Registro correcto<br/>
                                 </div>
                         `;
+                        formregistro.reset();
                     } else {
                         console.log("error al registrar");
                         if (response.data.dato[0].duplicado == true) {
