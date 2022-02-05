@@ -1,7 +1,6 @@
 const formlogin=document.getElementById("formlogin");
 const error=document.getElementById("error");
 
-
 formlogin.addEventListener('submit',function(e){
     e.preventDefault();
     
@@ -17,7 +16,7 @@ formlogin.addEventListener('submit',function(e){
       })
         .then(function (response) {
           //handle success
-          
+          console.log(response.data)
           if(response.data.acceso==false){
             
             error.innerHTML=`

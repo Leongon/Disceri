@@ -111,6 +111,9 @@ def doble_telefono(telefono):
 @app.route('/')
 def index():
     return render_template("index.html")
+@app.route('/registro')
+def registro():
+    return render_template("registro.html")
 @app.route('/get_usuarios', )
 def get_usuarios():
     datos = obtener_usuarios()
@@ -139,10 +142,10 @@ def registrar_usuario():
                 sql = "INSERT INTO dbDesire.usuarios (usuario, pass, nombres, apellidos, correo, telefono, fkrol, estado)VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}','1','1');".format(request.json['usuario'],request.json['password'],request.json['nombres'],request.json['apellidos'],request.json['correo'],request.json['telefono'])
                 cursor.execute(sql)
                 conn.commit()                
-            return ({'msj': 'Registro correcto'})                
+            return ({"ingreso" : True,'msj': 'Registro correcto'})                
         else:
             
-            return ({'msj': 'Datos duplicados'})
+            return ({ "ingreso":False,"dato":(resusuario,rescorreo,restelefono),'msj': 'Datos duplicados'})
     except:
         return
 if __name__ == "__main__":
