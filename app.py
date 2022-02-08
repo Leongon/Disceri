@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from flask import jsonify
 
 import pymysql
 app = Flask(__name__)
+app.secret_key = "@112"
 # Parametros para la conexion
 def conexion():
     return pymysql.connect(host='localhost',
@@ -20,6 +21,10 @@ def login(usuario, password):
             cursor.execute("SELECT * FROM usuarios where usuario = '{0}' and pass = '{1}'".format(usuario, password))
             datos = cursor.fetchall()
             if not len(datos) == 0:
+                session["iduser"]= datos[0][0]                
+                session["usuario"]= datos[0][1]
+                session["nombre"]= datos[0][3]
+                session["rol"]= datos[0][7]
                 conn.close()
                 return {"acceso" : True, "msj": "Bienvenido"}
             else:
@@ -107,6 +112,22 @@ def doble_telefono(telefono):
                 return {"duplicado" : False, "msj": "Numero telefonico disponible"}     
     except:
         return jsonify({'msj': 'Error en la bd'})
+#cursos
+def obtener_cursos():
+    try:
+        conn = conexion()
+        datos = []
+        respuesta = []
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM cursos where estado = 1")
+            datos = cursor.fetchall()
+            for fila in datos:
+                item={'id':fila[0],'curso':fila[1],'descripcion':fila[3],'precio':fila[4],'fknivel':fila[5]}
+                respuesta.append(item)
+        conn.close()
+        return jsonify({'msj': respuesta})
+    except:
+        return jsonify({'msj': 'Error en la bd'})
 
 @app.route('/')
 def index():
@@ -150,6 +171,8 @@ def registrar_usuario():
         return
 @app.route("/inicio")
 def home():
-    return render_template("inicio.html")
+    if "usuario" in session:
+        return render_template("inicio.html")
+    return render_template("index.html")
 if __name__ == "__main__":
     app.run(debug=True)
