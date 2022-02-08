@@ -127,7 +127,7 @@ def get_usuario():
     datos = obtener_usuario(id)
     return datos
 @app.route('/login', methods=['POST', 'GET'])
-def inicio():    
+def log():    
     datos = login(request.json['usuario'], request.json['pass'])
     return datos
 @app.route('/registrar_usuario',  methods=['POST', 'GET'])
@@ -151,5 +151,8 @@ def registrar_usuario():
             return ({ "ingreso":False,"dato":(resusuario,rescorreo,restelefono),'msj': 'Datos duplicados'})
     except:
         return
+@app.route("/inicio")
+def home():
+    return render_template("inicio.html")
 if __name__ == "__main__":
     app.run(debug=True)
