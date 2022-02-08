@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from dataclasses import dataclass
+from flask import Flask, render_template, request, session
 from flask import jsonify
 
 import pymysql
 app = Flask(__name__)
+app.secret_key = "@112"
 # Parametros para la conexion
 def conexion():
     return pymysql.connect(host='localhost',
@@ -20,6 +22,10 @@ def login(usuario, password):
             cursor.execute("SELECT * FROM usuarios where usuario = '{0}' and pass = '{1}'".format(usuario, password))
             datos = cursor.fetchall()
             if not len(datos) == 0:
+                session["iduser"]= datos[0][0]                
+                session["usuario"]= datos[0][1]
+                session["nombre"]= datos[0][3]
+                session["rol"]= datos[0][7]
                 conn.close()
                 return {"acceso" : True, "msj": "Bienvenido"}
             else:
@@ -107,19 +113,64 @@ def doble_telefono(telefono):
                 return {"duplicado" : False, "msj": "Numero telefonico disponible"}     
     except:
         return jsonify({'msj': 'Error en la bd'})
-
+#cursos
+def obtener_cursos():
+    try:
+        conn = conexion()
+        datos = []
+        respuesta = []
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM cursos where estado = 1")
+            datos = cursor.fetchall()
+            for fila in datos:
+                item={'id':fila[0],'curso':fila[1],'descripcion':fila[3],'precio':fila[4],'fknivel':fila[5]}
+                respuesta.append(item)
+        conn.close()
+        return jsonify({'msj': respuesta})
+    except:
+        return jsonify({'msj': 'Error en la bd'})
+def obtener_modulos(idcurso):
+    try:
+        conn = conexion()
+        datos = []
+        respuesta = []
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT modulocurso.idmodulocurso, modulocurso.url,modulocurso.titulo, modulocurso.descripcion FROM cursos INNER JOIN modulocurso ON cursos.idcursos = modulocurso.fkcursomodulo WHERE cursos.idcursos = '{}';".format(idcurso))
+            datos = cursor.fetchall()
+            i = 1
+            for fila in datos:
+                i += 1
+                item={'nro': i , 'idmodulo':fila[0],'url':fila[1], 'titulo':fila[2], 'descripcion':fila[3], 'acceso': True}
+                respuesta.append(item)             
+        conn.close()
+        return jsonify({'msj': respuesta})
+    except:
+        return jsonify({'msj': 'Error en la bd'})
+def obtener_archivos(idcurso):
+    try:
+        conn = conexion()
+        datos = []
+        respuesta = []
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT modulocurso.idmodulocurso, archivoscurso.urlpdf FROM (cursos INNER JOIN modulocurso ON cursos.idcursos = modulocurso.fkcursomodulo) INNER JOIN archivoscurso ON modulocurso.idmodulocurso = archivoscurso.fkmodulocurso WHERE cursos.idcursos = '{}';".format(idcurso))
+            datos = cursor.fetchall()
+            i = 0
+            for filapdf in datos:
+                i += 1               
+                item={'idmodulocurso':filapdf[0],'url':filapdf[1]}
+                respuesta.append(item)           
+        conn.close()
+        return jsonify({'msj': respuesta})
+    except:
+        return jsonify({'msj': 'Error en la bd'})
+    
 @app.route('/')
 def index():
     return render_template("index.html")
+#rutas usuario
 @app.route('/registro')
 def registro():
     return render_template("registro.html")
-@app.route('/panel')
-def panel():
-    return render_template("panel.html")
-@app.route('/cursos')
-def cursos():
-    return render_template("cursos.html")
 @app.route('/get_usuarios', )
 def get_usuarios():
     datos = obtener_usuarios()
@@ -136,12 +187,9 @@ def log():
 @app.route('/registrar_usuario',  methods=['POST', 'GET'])
 def registrar_usuario():
     try:
-        resusuario = doble_usuario(request.json['usuario'])
-        print(resusuario)
-        rescorreo = doble_correo(request.json['correo'])
-        print(rescorreo)
-        restelefono= doble_telefono(request.json['telefono'])
-        print(restelefono)
+        resusuario = doble_usuario(request.json['usuario'])        
+        rescorreo = doble_correo(request.json['correo'])        
+        restelefono= doble_telefono(request.json['telefono'])        
         if (resusuario['duplicado'] or rescorreo['duplicado'] or restelefono['duplicado']) == False:
             conn = conexion()
             with conn.cursor() as cursor:
@@ -156,6 +204,15 @@ def registrar_usuario():
         return
 @app.route("/inicio")
 def home():
-    return render_template("inicio.html")
+    if "usuario" in session:
+        urlvideo = obtener_modulos(1)
+        urlpdf = obtener_archivos(1)
+        datos = {urlvideo, urlpdf}       
+        return render_template("panel.html", urlpdf = urlpdf, urlvideo = urlvideo)
+    return render_template("index.html")
+@app.route("/get_cursos")
+def get_cursos():
+    datos = obtener_cursos()    
+    return datos
 if __name__ == "__main__":
     app.run(debug=True)
