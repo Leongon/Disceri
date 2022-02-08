@@ -25,6 +25,12 @@ formlogin.addEventListener('submit',function(e){
 					  </div>
             `;
             
+          }else{
+            error.innerHTML=`
+            <div class="alert alert-danger" role="alert">
+						${response.data.msj}
+					  </div>
+            `;
           }
           if(response.data.acceso==true){
             console.log("Bienvenido");
