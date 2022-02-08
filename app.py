@@ -117,6 +117,9 @@ def registro():
 @app.route('/panel')
 def panel():
     return render_template("panel.html")
+@app.route('/cursos')
+def cursos():
+    return render_template("cursos.html")
 @app.route('/get_usuarios', )
 def get_usuarios():
     datos = obtener_usuarios()

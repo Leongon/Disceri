@@ -183,10 +183,10 @@ iframe {
   top: 0;
   left: 0;
   background: #005bea;
-  background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
-  background: -o-linear-gradient(bottom, #005bea, #00c6fb);
-  background: -moz-linear-gradient(bottom, #005bea, #00c6fb);
-  background: linear-gradient(bottom, #005bea, #00c6fb);
+  background: -webkit-linear-gradient(bottom, #005bea, #020202);
+  background: -o-linear-gradient(bottom, #005bea, #020202);
+  background: -moz-linear-gradient(bottom, #005bea, #020202);
+  background: linear-gradient(bottom, #005bea, #020202);
   opacity: 0.9;
 }
 
@@ -317,7 +317,7 @@ iframe {
 }
 
 .input100:focus + .focus-input100 + .symbol-input100 {
-  color: #00c6fb;
+  color: #020202;
   padding-left: 23px;
 }
 
@@ -374,10 +374,10 @@ iframe {
   top: 0;
   left: 0;
   background: #005bea;
-  background: -webkit-linear-gradient(left, #005bea, #00c6fb);
-  background: -o-linear-gradient(left, #005bea, #00c6fb);
-  background: -moz-linear-gradient(left, #005bea, #00c6fb);
-  background: linear-gradient(left, #005bea, #00c6fb);
+  background: -webkit-linear-gradient(left, #005bea, #020202);
+  background: -o-linear-gradient(left, #005bea, #020202);
+  background: -moz-linear-gradient(left, #005bea, #020202);
+  background: linear-gradient(left, #005bea, #020202);
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
@@ -535,7 +535,7 @@ iframe {
 
 }
 .uno{
-  grid-area:uno ;
+  grid-area:uno;
 }
 .dos{
   grid-area: dos;

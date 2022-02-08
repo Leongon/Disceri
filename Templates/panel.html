@@ -27,10 +27,10 @@
           </form>
           <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-              <a class="nav-link" href="#">Inicio</a>
+              <a class="nav-link" href="/cursos">Cursos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Mis cursos</a>
+              <a class="nav-link" href="#">Msi cursos</a>
             </li>
            
           </ul>
@@ -55,7 +55,7 @@
         <div class="container-fluid">
           <div class="row">
             
-            <div class="col-9 ">
+            <div class="col-12 columna-1-1 ">
 
               <div class="p-2">
                 <div class="p-2">
@@ -81,7 +81,7 @@
                   <button type="submit" class="btn btn-dark flecha radio-izquierda">
                     <strong><</strong>
                   </button>
-                  <button type="submit" class="btn btn-dark color-yellow">
+                  <button type="submit" class="btn btn-dark color-yellow cursoss">
                     <i class="fa fa-th-list" aria-hidden="true"></i>
 
                   </button>
@@ -91,21 +91,24 @@
                 </div>
               </div>
             </div>
-            <div class="col-3 p-2 bg-dark">
+            <div class="col-12 columna-1-2 pt-5 ">
               <div class="container">
-                <ul class="nav nav-tabs bg-light">
+                <ul class="nav nav-tabs bg-light row">
                   <li class="nav-item bg-dark">
                     <a class="nav-link activar" data-toggle="tab" href="#Materiales">Materiales</a>
                   </li>
                   <li class="nav-item bg-dark">
-                    <a  class="nav-link " data-toggle="tab" href="#cursos">Cursos</a>
+                    <a  class="nav-link curso-activar p-1 " data-toggle="tab" href="#cursos">Cursos</a>
                   </li>
-                  
+                  <li class="nav-item bg-dark">
+                    <a class="nav-link curso-activar" data-toggle="tab" href="#comentarios">comentarios</a>
+                  </li>
+                </ul> 
                   
               
                 <div class="tab-content">
                   <div id="cursos"  class="tab-pane p-2 ">
-                    <h3>Clases a desarrollar</h3>
+                    <h3 class="text-white">Clases a desarrollar</h3>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                        <a href="" value="1" class="material"> clase 1</a>
@@ -123,7 +126,7 @@
                     
                   </div>
                   <div id="Materiales" class="tab-pane fade">
-                    <h3>Materiales</h3>
+                    <h3 class="text-white">Materiales</h3>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                        <a href="" value="1" class="material"> Material 1</a>
@@ -139,6 +142,11 @@
                        </li>
                       
                     </ul>
+                  </div>
+                  <div id="comentarios"  class="tab-pane p-2 ">
+                    <h3 class="text-white">comentarios</h3>
+                    comentarios
+                    
                   </div>
                   
                 </div>
@@ -159,7 +167,9 @@
     <script>
 
       barra_progreso();
-      
+      $('.cursoss').click(function(){
+        $('.curso-activar').click();
+      })
 function barra_progreso(){
       $(".activar").click();
       $(".radio-izquierda").prop('disabled',true);
@@ -227,7 +237,6 @@ function barra_progreso(){
           $(".radio-derecha").removeAttr('disabled');
           $(".radio-izquierda").removeAttr('disabled');
         }
-
 
       }
     }

@@ -5,8 +5,16 @@ body{
     background-image:url('../images/img-01.jpg');
 }
 .container-fluid{
-    background-color: #3498db;
-    opacity: .9;
+    background: #005bea;
+    background: -webkit-linear-gradient(left, #005bea, #020202);
+    background: -o-linear-gradient(left, #005bea, #020202);
+    background: -moz-linear-gradient(left, #005bea, #020202);
+    background: linear-gradient(left, #005bea, #020202);
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    opacity: .94;
 }
 
 
@@ -38,8 +46,6 @@ body{
     z-index: 1;
 }
 
-
-
 .circulo{
     background-color: #fff;
     color: #999;
@@ -61,5 +67,41 @@ body{
 .conte{
  
  margin-top: -2.3%;
+}
+.row{
+    display: grid;
+    grid-template-areas:"uno dos";
+    grid-template-columns: 75% 25%;  
+    width: 100%;
+  }
+  .columna-1-1{
+      grid-area: uno;
+      
+  }
+  .columna-1-2{
+    grid-area: dos;
+    
+}
+
+/* Para 1024px */  
+@media only screen and (max-width: 1024px)  {  
+  
+  .row{
+    display: grid;
+    grid-template-areas:"uno"
+    "dos";
+    grid-template-columns: 100%;  
+    
+    width: 100%;
+  }
+  .columna-1-1{
+      grid-area: uno;
+      background-color: #3498db;
+  }
+  .columna-1-2{
+    grid-area: dos;
+    
+}
+
 }
 
