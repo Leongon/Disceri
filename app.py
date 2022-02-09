@@ -143,7 +143,7 @@ def obtener_modulos(idcurso):
                 item={'nro': i , 'idmodulo':fila[0],'url':fila[1], 'titulo':fila[2], 'descripcion':fila[3], 'acceso': True}
                 respuesta.append(item)             
         conn.close()
-        return respuesta
+        return jsonify({'msj': respuesta})
     except:
         return jsonify({'msj': 'Error en la bd'})
 def obtener_archivos(idcurso):
@@ -152,7 +152,7 @@ def obtener_archivos(idcurso):
         datos = []
         respuesta = []
         with conn.cursor() as cursor:
-            cursor.execute("SELECT modulocurso.idmodulocurso, archivoscurso.urlpdf FROM (cursos INNER JOIN modulocurso ON cursos.idcursos = modulocurso.fkcursomodulo) INNER JOIN archivoscurso ON modulocurso.idmodulocurso = archivoscurso.fkmodulocurso WHERE cursos.idcursos = '{}';".format(idcurso))
+            cursor.execute("SELECT * FROM dbdesire.archivoscurso WHERE fkmodulocurso = '{}';".format(idcurso))
             datos = cursor.fetchall()
             i = 0
             for filapdf in datos:
@@ -160,17 +160,12 @@ def obtener_archivos(idcurso):
                 item={'idmodulocurso':filapdf[0],'url':filapdf[1]}
                 respuesta.append(item)           
         conn.close()
-        return  respuesta
+        return jsonify({'msj': respuesta})
     except:
         return jsonify({'msj': 'Error en la bd'})
     
 @app.route('/')
 def index():
-    return render_template("index.html")
-@app.route('/panel')
-def panel():
-    if "usuario" in session:
-        return render_template("panel.html")
     return render_template("index.html")
 #rutas usuario
 @app.route('/registro')
@@ -209,18 +204,16 @@ def registrar_usuario():
         return
 @app.route("/inicio")
 def home():
-    if "usuario" in session:
-        urlvideo = obtener_modulos(1)
-        urlpdf = obtener_archivos(1)
-        
-        return jsonify({'urlvideo': urlvideo,"urlpdf":urlpdf})
-        
-    return jsonify({'msj': "inicie session","estado":False})
+    if "usuario" in session: 
+        return render_template("panel.html")
+    return render_template("index.html")
 @app.route("/get_cursos")
-
 def get_cursos():
-    datos = obtener_cursos()    
-
-    return "da"
+    datos = obtener_cursos()        
+    return datos
+@app.route("/get_archivos")
+def archivos_video(idvideo):
+    urlpdf = obtener_archivos(idvideo)
+    return urlpdf
 if __name__ == "__main__":
     app.run(debug=True)
