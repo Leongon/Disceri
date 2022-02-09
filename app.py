@@ -213,6 +213,7 @@ def home():
 @app.route("/get_cursos")
 def get_cursos():
     datos = obtener_cursos()    
-    return datos
+
+    return "da"
 if __name__ == "__main__":
     app.run(debug=True)
