@@ -212,8 +212,8 @@ def get_cursos():
     datos = obtener_cursos()        
     return datos
 @app.route("/get_videos")
-def get_videos():
-    datos = obtener_modulos()        
+def get_videos(idcurso):
+    datos = obtener_modulos(idcurso)        
     return datos
 @app.route("/get_archivos")
 def archivos_video(idvideo):
