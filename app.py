@@ -211,9 +211,13 @@ def home():
 def get_cursos():
     datos = obtener_cursos()        
     return datos
+@app.route("/get_videos")
+def get_videos():
+    datos = obtener_modulos()        
+    return datos
 @app.route("/get_archivos")
 def archivos_video(idvideo):
-    urlpdf = obtener_archivos(idvideo)
-    return urlpdf
+    datos = obtener_archivos(idvideo)
+    return datos
 if __name__ == "__main__":
     app.run(debug=True)
