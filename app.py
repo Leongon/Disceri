@@ -143,7 +143,7 @@ def obtener_modulos(idcurso):
                 item={'nro': i , 'idmodulo':fila[0],'url':fila[1], 'titulo':fila[2], 'descripcion':fila[3], 'acceso': True}
                 respuesta.append(item)             
         conn.close()
-        return jsonify({'msj': respuesta})
+        return respuesta
     except:
         return jsonify({'msj': 'Error en la bd'})
 def obtener_archivos(idcurso):
@@ -160,12 +160,17 @@ def obtener_archivos(idcurso):
                 item={'idmodulocurso':filapdf[0],'url':filapdf[1]}
                 respuesta.append(item)           
         conn.close()
-        return jsonify({'msj': respuesta})
+        return  respuesta
     except:
         return jsonify({'msj': 'Error en la bd'})
     
 @app.route('/')
 def index():
+    return render_template("index.html")
+@app.route('/panel')
+def panel():
+    if "usuario" in session:
+        return render_template("panel.html")
     return render_template("index.html")
 #rutas usuario
 @app.route('/registro')
@@ -207,10 +212,12 @@ def home():
     if "usuario" in session:
         urlvideo = obtener_modulos(1)
         urlpdf = obtener_archivos(1)
-        datos = {urlvideo, urlpdf}       
-        return render_template("panel.html", urlpdf = urlpdf, urlvideo = urlvideo)
-    return render_template("index.html")
+        
+        return jsonify({'urlvideo': urlvideo,"urlpdf":urlpdf})
+        
+    return jsonify({'msj': "inicie session","estado":False})
 @app.route("/get_cursos")
+
 def get_cursos():
     datos = obtener_cursos()    
 
