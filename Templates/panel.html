@@ -1,3 +1,4 @@
+{% if "usuario" in session: %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="../static/src/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/png" href="../static/src/images/icons/favicon.ico"/>
     <link rel="stylesheet" href="../static/src/css/panel.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <title>Disceri | Inicio</title>
     
   </head>
@@ -38,7 +42,7 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="../static/src/images/avatar-01.png" width="40" height="40" class="d-inline-block align-top" alt="">
-                  usuario
+                {{session["nombre"]}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="#">Perfil</a>
@@ -164,13 +168,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
+    <script src="../static/src/js/cursos.js"></script>
     <script>
 
       barra_progreso();
       $('.cursoss').click(function(){
         $('.curso-activar').click();
       })
-function barra_progreso(){
+      function barra_progreso(){
       $(".activar").click();
       $(".radio-izquierda").prop('disabled',true);
       
@@ -240,8 +245,13 @@ function barra_progreso(){
 
       }
     }
-    </script>
+   
+   
+   </script>
 
   </body>
 
 </html>
+{% else:%}
+
+{% endif %}
