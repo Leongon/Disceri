@@ -211,13 +211,13 @@ def home():
 def get_cursos():
     datos = obtener_cursos()        
     return datos
-@app.route("/get_videos")
-def get_videos(idcurso):
-    datos = obtener_modulos(idcurso)        
+@app.route("/get_videos", methods=['POST', 'GET'])
+def get_videos():
+    datos = obtener_modulos(request.json['idcurso'])        
     return datos
-@app.route("/get_archivos")
-def archivos_video(idvideo):
-    datos = obtener_archivos(idvideo)
+@app.route("/get_archivos",methods=['POST', 'GET'])
+def archivos_video():
+    datos = obtener_archivos(request.json['idvideo'])
     return datos
 if __name__ == "__main__":
     app.run(debug=True)

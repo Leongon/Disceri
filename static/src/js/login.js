@@ -34,7 +34,7 @@ formlogin.addEventListener('submit',function(e){
           }
           if(response.data.acceso==true){
             console.log("Bienvenido");
-            window.location.href = "/panel";
+            window.location.href = "/inicio";
             console.log(datoJson);
           }
         })
